@@ -4,6 +4,28 @@ A lightweight Java decision DSL that replaces nested if-else with fluent rule co
 
 > DSL = A specialized way of writing code that makes it feel like you are describing the problem, not programming it.
 
+### 🧩 Concept
+
+Instead of writing:
+
+```java
+if (a) {
+    if (b) {
+        action1();
+    }
+} else {
+    action2();
+}
+```
+
+We write:
+
+```java
+Decisio.of(value)
+    .when(a).then(action1)
+    .otherwise(action2);
+```
+
 ### 🚀 Why Decisio?
 
 Deeply nested `if-else` logic quickly becomes:
@@ -84,28 +106,6 @@ Decisio evaluates rules in order:
 2. Execute associated action
 3. Stop (default behavior: first match wins)
 4. Fallback to otherwise
-
-### 🧩 Concept
-
-Instead of writing:
-
-```java
-if (a) {
-    if (b) {
-        action1();
-    }
-} else {
-    action2();
-}
-```
-
-We write:
-
-```java
-Decisio.of(value)
-    .when(a).then(action1)
-    .otherwise(action2);
-```
 
 ### 🎯 Use Cases
 
