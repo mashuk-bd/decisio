@@ -65,6 +65,16 @@ public class Decision<T> {
             return this;
         }
 
+        public ConditionBuilder andNot(Predicate<T> other) {
+            predicate = predicate.and(other.negate());
+            return this;
+        }
+
+        public ConditionBuilder orNot(Predicate<T> other) {
+            predicate = predicate.or(other.negate());
+            return this;
+        }
+
         public Decision<T> then(Consumer<T> action) {
             rules.add(new Rule<>(predicate, action));
             return Decision.this;
