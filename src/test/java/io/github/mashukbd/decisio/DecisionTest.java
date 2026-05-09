@@ -186,4 +186,56 @@ public class DecisionTest {
 
         assertEquals("test value", captured[0]);
     }
+
+    @Test
+    public void testAndNotCondition() {
+        StringBuilder result = new StringBuilder();
+
+        Decision.of("hello")
+                .when(s -> s.length() > 3)
+                .andNot(s -> s.startsWith("w"))
+                .then(s -> result.append("match"))
+                .otherwise(s -> result.append("no match"));
+
+        assertEquals("match", result.toString());
+    }
+
+    @Test
+    public void testAndNotConditionFails() {
+        StringBuilder result = new StringBuilder();
+
+        Decision.of("world")
+                .when(s -> s.length() > 3)
+                .andNot(s -> s.startsWith("w"))
+                .then(s -> result.append("match"))
+                .otherwise(s -> result.append("no match"));
+
+        assertEquals("no match", result.toString());
+    }
+
+    @Test
+    public void testOrNotCondition() {
+        StringBuilder result = new StringBuilder();
+
+        Decision.of("hello")
+                .when(s -> s.length() > 10)
+                .orNot(s -> s.startsWith("w"))
+                .then(s -> result.append("match"))
+                .otherwise(s -> result.append("no match"));
+
+        assertEquals("match", result.toString());
+    }
+
+    @Test
+    public void testOrNotConditionFails() {
+        StringBuilder result = new StringBuilder();
+
+        Decision.of("world")
+                .when(s -> s.length() > 10)
+                .orNot(s -> s.startsWith("w"))
+                .then(s -> result.append("match"))
+                .otherwise(s -> result.append("no match"));
+
+        assertEquals("no match", result.toString());
+    }
 }
