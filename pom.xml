@@ -7,7 +7,7 @@
     <!-- ========================= -->
     <!-- PROJECT COORDINATES -->
     <!-- ========================= -->
-    <groupId>io.github.mashukbd</groupId>
+    <groupId>io.github.mashuk-bd</groupId>
     <artifactId>decisio</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
@@ -34,7 +34,7 @@
     <!-- ========================= -->
     <developers>
         <developer>
-            <id>mashukbd</id>
+            <id>mashuk-bd</id>
             <name>Mashukur Rahman</name>
             <url>https://github.com/mashuk-bd</url>
         </developer>
@@ -67,7 +67,6 @@
     <!-- DEPENDENCIES -->
     <!-- ========================= -->
     <dependencies>
-
         <!-- JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -75,16 +74,13 @@
             <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <!-- ========================= -->
     <!-- BUILD CONFIG -->
     <!-- ========================= -->
     <build>
-
         <plugins>
-
             <!-- Java Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -93,10 +89,41 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <release>${java.version}</release>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
-
+            <!-- Source JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Javadoc JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.3</version>
+                <configuration>
+                    <doclint>none</doclint>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- Test Runner -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -106,9 +133,61 @@
                     <useModulePath>false</useModulePath>
                 </configuration>
             </plugin>
-
         </plugins>
-
     </build>
+    <!-- ========================= -->
+    <!-- PROFILE CONFIG -->
+    <!-- ========================= -->
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
 
+                    <!-- GPG signing (REQUIRED for Maven Central) -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Maven Central Publisher -->
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.6.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>uploaded</waitUntil>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    <!-- ========================= -->
+    <!-- REQUIRED FOR CENTRAL -->
+    <!-- ========================= -->
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <url>https://central.sonatype.com/api/v1/publisher/deployments/upload</url>
+        </repository>
+    </distributionManagement>
 </project>
