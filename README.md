@@ -52,7 +52,7 @@ Decisio simplifies this by providing a **fluent, readable decision flow API** us
 
 ```xml
 <dependency>
-    <groupId>io.github.mashukbd</groupId>
+    <groupId>io.github.mashuk-bd</groupId>
     <artifactId>decisio</artifactId>
     <version>1.0.0</version>
 </dependency>
